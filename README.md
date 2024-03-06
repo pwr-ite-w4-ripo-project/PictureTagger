@@ -1,0 +1,2 @@
+# PictureTagger
+Academic project
