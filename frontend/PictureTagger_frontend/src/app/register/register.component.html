@@ -1,0 +1,60 @@
+<!-- <h1>Register</h1>
+
+@if (errorMessage) {
+  <div>{{ errorMessage }}</div>
+} -->
+
+<div class="register-form">
+  <mat-card class="example-card">
+   <mat-card-header>
+     <mat-card-title>Register</mat-card-title>
+   </mat-card-header>
+   <mat-card-content>
+     <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+       <table class="example-full-width" cellspacing="0">
+         <tr>
+           <td>
+             <mat-form-field class="example-full-width">
+             <input matInput type="text" placeholder="Username" formControlName="username" required>
+             <mat-hint style="color: red;" *ngIf="form.get('username')?.touched && form.hasError('required', 'username')">Username is required!</mat-hint>
+             </mat-form-field>
+           </td>
+         </tr>
+         <tr>
+         <td><mat-form-field class="example-full-width">
+           <input matInput type="text" placeholder="Email" formControlName="email" required>
+           <mat-hint style="color: red;" *ngIf="form.get('email')?.touched && form.hasError('required', 'email')">Email is required!</mat-hint>
+         </mat-form-field></td>
+       </tr>
+       <tr>
+        <td><mat-form-field class="example-full-width">
+          <input matInput type="text" placeholder="Password" formControlName="password" required>
+          <mat-hint style="color: red;" *ngIf="form.get('password')?.touched && form.hasError('required', 'password')">Password is required!</mat-hint>
+        </mat-form-field></td>
+      </tr>
+      </table>
+       <mat-card-actions>
+         <button mat-raised-button type="submit" color="primary">Sign Up</button>
+       </mat-card-actions>
+     </form>
+   </mat-card-content>
+ </mat-card>
+</div>
+
+
+
+
+<!-- <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div>
+    <input type="text" placeholder="Username" formControlName="username" />
+  </div>
+  <div>
+    <input type="text" placeholder="Email" formControlName="email" />
+  </div>
+  <div>
+    <input type="password" placeholder="Password" formControlName="password" />
+  </div>
+  <div>
+    <button type="submit">Sign Up</button>
+  </div>
+</form> -->
