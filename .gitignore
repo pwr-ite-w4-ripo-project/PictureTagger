@@ -2,3 +2,5 @@ venv/
 **/**/*.Development.json
 **/**/obj/**/**
 **/**/bin/**/**
+DockerVolumes/
+**/**/.idea/
