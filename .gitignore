@@ -1,2 +1,4 @@
-**/**/*.Development.json
 venv/
+**/**/*.Development.json
+**/**/obj/**/**
+**/**/bin/**/**
