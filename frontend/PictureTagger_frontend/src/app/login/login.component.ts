@@ -5,14 +5,28 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CustomMaterialModule } from '../material.module';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { DomSanitizer } from "@angular/platform-browser";
+import { MatIconRegistry } from '@angular/material/icon';
+
+const googleLogoURL = 
+"https://raw.githubusercontent.com/fireflysemantics/logo/master/Google.svg";
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-login, ngbd-alert-basic',
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CustomMaterialModule, FormsModule, RouterOutlet, RouterLink],
+  imports: [ReactiveFormsModule, CustomMaterialModule, FormsModule, RouterOutlet, RouterLink, NgbAlertModule],
 })
 export class LoginComponent {
+  constructor (
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer) {
+          this.matIconRegistry.addSvgIcon(
+      "logo",
+      this.domSanitizer.bypassSecurityTrustResourceUrl(googleLogoURL));
+    }
+
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   authService = inject(AuthService);
@@ -28,11 +42,23 @@ export class LoginComponent {
     this.router.navigateByUrl('/register')
   }
 
+  _loginWithGoogle(): void {
+    this.authService.loginWithGoogle().subscribe( {
+      next: () => {
+      this.router.navigateByUrl('/register');
+    },
+    error: (err) => {
+      this.errorMessage = err.code;
+    }
+  })
+  }
+
+
   onSubmit(): void {
     const rawForm = this.form.getRawValue()
     this.authService.login(rawForm.email, rawForm.password).subscribe( {
       next: () => {
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/send');
     },
     error: (err) => {
       this.errorMessage = this.convertErrMess(err.code);

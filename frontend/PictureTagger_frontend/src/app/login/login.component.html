@@ -1,25 +1,5 @@
-<!-- <h1>Login</h1>
-
-
-
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div>
-    <input type="text" placeholder="Email" formControlName="email" />
-  </div>
-  <div>
-    <input type="password" placeholder="Password" formControlName="password" />
-  </div>
-  <div>
-    <button type="submit">Sign In</button>
-  </div>
-</form> -->
-
-@if (errorMessage) {
-  <div>{{ errorMessage }}</div>
-}
-
 <div class="login-form">
-   <mat-card class="example-card">
+  <mat-card class="example-card">
     <mat-card-header>
       <mat-card-title>Login</mat-card-title>
     </mat-card-header>
@@ -29,21 +9,37 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-              <input matInput type="text" placeholder="Email" formControlName="email" required>
-              <mat-hint style="color: red;" *ngIf="form.get('email')?.touched && form.hasError('required', 'email')">Email is required!</mat-hint>
+                <input matInput type="text" placeholder="Email" formControlName="email" required>
+                <mat-hint style="color: red;" *ngIf="form.get('email')?.touched && form.hasError('required', 'email')">Email is required!</mat-hint>
               </mat-form-field>
             </td>
           </tr>
           <tr>
-          <td><mat-form-field class="example-full-width">
-            <input matInput type="password" placeholder="Password" formControlName="password" required>
-            <mat-hint style="color: red;" *ngIf="form.get('password')?.touched && form.hasError('required', 'password')">Password is required!</mat-hint>
-          </mat-form-field></td>
-        </tr></table>
-        <mat-card-actions>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput type="password" placeholder="Password" formControlName="password" required>
+                <mat-hint style="color: red;" *ngIf="form.get('password')?.touched && form.hasError('required', 'password')">Password is required!</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <div class="button-container"> <!-- Zmieniono na zwykły div -->
           <button mat-raised-button type="submit" color="primary">Sign In</button>
-        </mat-card-actions>
+          <div class="container">
+            <div class="line"><mat-divider></mat-divider></div>
+            <div class="text mat-typography">Or</div>
+            <div class="line"><mat-divider></mat-divider></div>
+          </div>
+          <button type="button" mat-raised-button color="primary" (click)="_loginWithGoogle()">
+            <mat-icon style="width: 50px; height:30px" svgIcon="logo"></mat-icon>Sign In with Google
+          </button>
+        </div>
       </form>
+      <ng-container *ngIf="errorMessage">
+        <ngb-alert [dismissible]="false">
+          <strong>Error!</strong> {{ errorMessage }}
+        </ngb-alert>
+      </ng-container>
     </mat-card-content>
   </mat-card>
 </div>

@@ -1,22 +1,15 @@
-<!-- @if (authService.currentUserSig() == null) {
-  <div>
-    <a routerLink="/login">Login</a>
-    <a routerLink="/register">Register</a>
-  </div>
-}
-@if (authService.currentUserSig()) {
-  <div>
-    <span (click)="logout()">Logout</span>
-  </div>
-} -->
 <mat-toolbar color="primary">
   <mat-toolbar-row>
   <span>PictureTagger</span>
   <div class="parent">
     <div class="children right-children">
-      <div class="child text-button"><button mat-button routerLink="/register" routerLinkActive="active">Register</button></div>
-      <div class="child text-button"><button mat-button>About</button></div>
-      <div class="child text-button"><button mat-button>Contact</button></div>
+      @if (authService.currentUserSig() == null) {
+          <div class="child text-button"><button mat-button routerLink="/login" routerLinkActive="active">Login</button></div>
+          <div class="child text-button"><button mat-button routerLink="/register" routerLinkActive="active">Register</button></div>
+      }
+      @if (authService.currentUserSig()) {
+        <div class="child text-button"><button mat-button (click)="logout()">Logout</button></div>
+      }
       <div class="child">
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
@@ -26,12 +19,12 @@
   </div>
   <mat-menu #menu="matMenu">
     <button mat-menu-item disabled>
-      <mat-icon>dialpad</mat-icon>
-      <span>Foo</span>
+      <mat-icon>info</mat-icon>
+      <span>About</span>
     </button>
     <button mat-menu-item disabled>
-      <mat-icon>notifications_off</mat-icon>
-      <span>bar</span>
+      <mat-icon>contact_support</mat-icon>
+      <span>Contact</span>
     </button>
   </mat-menu>
    </mat-toolbar-row>

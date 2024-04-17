@@ -1,31 +1,25 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { CustomMaterialModule } from './material.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { MatDialog } from '@angular/material/dialog';
-import { PopupComponent } from './popup/popup.component';
+import { PicSendFormComponent } from './pic-send-form/pic-send-form.component'
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, CustomMaterialModule, LoginComponent, RegisterComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, CustomMaterialModule, LoginComponent, RegisterComponent, PicSendFormComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
   authService = inject(AuthService)
   http = inject(HttpClient);
-  // router = inject(Router);
+  router = inject(Router);
 
-  constructor(private dialogRef: MatDialog) {}
-
-  openDialog() {
-    this.dialogRef.open(PopupComponent)
-  }
 
   ngOnInit(): void {
     this.authService.user$.subscribe((user) => {
@@ -34,6 +28,7 @@ export class AppComponent implements OnInit {
           email: user.email!,
           username: user.displayName!
         });
+        this.router.navigateByUrl('/send');
       }
         else {
           this.authService.currentUserSig.set(null)
@@ -44,5 +39,6 @@ export class AppComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+    this.router.navigateByUrl('/login');
   }
 }

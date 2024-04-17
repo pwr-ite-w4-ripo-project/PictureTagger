@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from "@angular/core";
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, user } from "@angular/fire/auth";
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, user, GoogleAuthProvider, signInWithRedirect  } from "@angular/fire/auth";
 import { Observable, from } from "rxjs";
 import { UserInterface } from "./user.interface";
 
@@ -11,6 +11,16 @@ export class AuthService {
     firebaseAuth = inject(Auth)
     user$ = user(this.firebaseAuth)
     currentUserSig = signal<UserInterface | null | undefined>(undefined)
+
+    
+    loginWithGoogle(): Observable<void> {
+        const promise = signInWithRedirect(
+            this.firebaseAuth,
+            new GoogleAuthProvider()
+        ).then(() => {})
+
+        return from(promise)
+    }
 
     register(email: string, username: string, password: string): Observable<void> {
         const promise = createUserWithEmailAndPassword(
