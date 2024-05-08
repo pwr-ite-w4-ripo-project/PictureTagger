@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+WORKDIR /App
+ADD ./backend/PictureTaggerBackend/Api ./Src/Api
+ADD ./backend/PictureTaggerBackend/Application ./Src/Application
+ADD ./backend/PictureTaggerBackend/Infrastructure ./Src/Infrastructure
+ADD ./backend/PictureTaggerBackend/Domain ./Src/Domain
+
+WORKDIR /App/Src/Api
+RUN dotnet restore
+RUN dotnet publish -c Release -o ../../Out
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+
+WORKDIR /Api
+COPY --from=build ./App/Out .
+
+ENTRYPOINT dotnet Api.dll

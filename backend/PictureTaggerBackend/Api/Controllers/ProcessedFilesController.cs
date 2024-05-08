@@ -1,4 +1,5 @@
-using System.Diagnostics;
+using Application.Requests;
+using Application.Requests.Payloads;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,26 +11,49 @@ public class ProcessedFilesController : BaseController
     private readonly IMediator _mediator;
 
     public ProcessedFilesController(IMediator mediator)
-        => _mediator = mediator;
+        =>  _mediator = mediator;
 
     // [Authorize]
     [HttpGet, Route("{id:guid}")]
     public async Task<IActionResult> Download([FromQuery] Guid id)
     {
-        throw new UnreachableException();
-    }
+        DownloadProcessedFileQuery request = new(id, GetRequester());
+        
+        var response = await _mediator.Send(request);
 
+        return MapResponse(response);
+    }
+    
     // [Authorize]
     [HttpGet, Route("")]
-    public async Task<IActionResult> GetList([FromQuery] object payload)
+    public async Task<IActionResult> GetList([FromQuery] FilePaginationPayload payload)
     {
-        throw new UnreachableException();
-    }
+        GetProcessedFileListQuery request = new(payload, GetRequester());
+        
+        var response = await _mediator.Send(request);
 
+        return MapResponse(response);
+    }
+    
     // [Authorize]
     [HttpDelete, Route("{id:guid}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
-        throw new UnreachableException();
+        DeleteProcessedFileCommand request = new(id, GetRequester());
+    
+        var response = await _mediator.Send(request);
+        
+        return MapResponse(response);
+    }
+    
+    // [Authorize] 
+    [HttpPatch, Route("${id:guid}")]
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateProcessedFilePayload payload)
+    {
+        UpdateProcessedFileCommand request = new(id, payload, GetRequester());
+
+        var response = await _mediator.Send(request);
+        
+        return MapResponse(response);
     }
 }

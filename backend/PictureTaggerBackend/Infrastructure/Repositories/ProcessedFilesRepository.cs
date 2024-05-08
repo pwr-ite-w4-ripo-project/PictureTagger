@@ -21,11 +21,11 @@ public sealed class ProcessedFilesRepository : BaseRepository, IProcessedFileRep
             DbContext.Attach(entity.Owner);
         }
         
-        var existingAccounts = await UtilQueries.GetExistingClassifications(
+        var existingClassifications = await UtilQueries.GetExistingClassifications(
             DbContext,
             entity.Classifications);
         
-        DbContext.AttachRange(entity.Classifications.Where(viewer => existingAccounts.Contains(viewer)));
+        DbContext.AttachRange(entity.Classifications.Where(viewer => existingClassifications.Contains(viewer)));
         
         DbContext.ProcessedFiles.Add(entity);
         await DbContext.SaveChangesAsync();
