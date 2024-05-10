@@ -4,7 +4,7 @@ namespace Domain.AggregateModels.ProcessedFileAggregate;
 
 public sealed class ProcessedFile : UniqueEntity, IProcessedFile
 {
-    private readonly HashSet<Classification> _classifications;
+    private HashSet<Classification> _classifications;
 
     public StorageData StorageData { get; }
     public ServeData ServeData { get; set; }
@@ -14,9 +14,12 @@ public sealed class ProcessedFile : UniqueEntity, IProcessedFile
     public IReadOnlySet<Classification> Classifications 
     {
         get => _classifications;
-        private init => _classifications = new HashSet<Classification>(value);  // overrides efcore's LegacyReferenceComparer
+        private set => _classifications = new HashSet<Classification>(value);  // overrides efcore's LegacyReferenceComparer
     }
 
+    public void SetClassifications(ICollection<Classification> newCollection)
+        => _classifications = new HashSet<Classification>(newCollection);
+    
     public ProcessedFile(
         AccessAccount owner,
         Metadata metadata,

@@ -12,18 +12,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 
-if (args.Length < 5) {
+if (args.Length < 2) {
     throw new ArgumentException("Insufficient amount of cli arguments.");
 }
 
-var originalFilesDirectory = args[0];
-var processedFilesDirectory = args[1];
-var dbConnectionString = args[2];
-var apiUrl = args[3];
-var rabbitConnectionString = args[4]!
+// var originalFilesDirectory = args[0];
+// var processedFilesDirectory = args[1];
+var dbConnectionString = args[0];
+// var apiUrl = args[1];
+var rabbitConnectionString = args[1]!
     .Split(";")
     .Select(keyValuePair => keyValuePair.Split("="))
     .ToDictionary(keyValuePair => keyValuePair[0], keyValuePair => keyValuePair[1]);
+
+Console.WriteLine(args[1]);
 
 var rabbitUsername = rabbitConnectionString["Username"] ?? throw new ArgumentNullException("Rabbit 'Username' not provided.");
 var rabbitPassword = rabbitConnectionString["Password"] ?? throw new ArgumentNullException("Rabbit 'Password' not provided.");

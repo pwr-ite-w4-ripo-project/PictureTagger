@@ -62,6 +62,7 @@ public class PythonAiProcessingHandler : IProcessingHandler
 
     private async Task HandleProcessingInBackgroundThread(OriginalFile file, CancellationTokenSource tokenSource)
     {
+        string newFilePath = Guid.NewGuid().ToString() + ".txt";
         // creates empty file to write processed data to
         // var newFilePath = await _processedFilesStorage.SaveAsync(new MemoryStream(), file.Owner);
         ProcessedFile newFile = new(
@@ -86,6 +87,12 @@ public class PythonAiProcessingHandler : IProcessingHandler
         }
 
         process.Dispose();
+
+        var labels = File.ReadAllLines(newFilePath)
+            .Select(l => new Classification(l))
+            .ToList();
+        newFile.SetClassifications(labels);
+        File.Delete(newFilePath); 
         
         lock (_filesCancellationTokenSourcesLookUpTable)
         {
@@ -101,7 +108,7 @@ public class PythonAiProcessingHandler : IProcessingHandler
     {
         var media = mediaType == MediaTypes.Image ? "image" : "video";
         Process process = new();
-        process.StartInfo.Arguments = $"Python/main.py {media} {inputFile} {outputFile} ./Python/Models/D0 0.5";
+        process.StartInfo.Arguments = $"Python/main.py {media} {inputFile} ./Python/key.json {outputFile} ./Python/Models/D0 0.5";
         process.StartInfo.FileName = "python";
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;

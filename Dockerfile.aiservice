@@ -38,4 +38,5 @@ ADD ./backend/PictureTaggerBackend/AiService/Python ./Python
 RUN pip install -r Python/requirements.txt
 RUN apt-get update && apt-get install -y ffmpeg
 
-ENTRYPOINT dotnet AiService.dll $original_dir $processed_dir $db_conn $api_url $rabbit_conn
+#ENTRYPOINT dotnet AiService.dll $original_dir $processed_dir $db_conn $api_url $rabbit_conn
+ENTRYPOINT dotnet AiService.dll $db_conn $rabbit_conn

@@ -67,10 +67,11 @@ services:
       dockerfile: Dockerfile.aiservice
       args:
         - DATABASE_CONNECTION_STRING=Host=db;Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Database=${DATABASE_NAME}
-        - RABBIT_CONNECTION_STRING=Host=amqp;Port=${AMQP_PORT};Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=AiService
+#        - RABBIT_CONNECTION_STRING=Host=amqp;Port=${AMQP_PORT};Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=AiService
+        - RABBIT_CONNECTION_STRING=Host=amqp;Port=5672;Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=AiService
         #- ORIGINAL_FILES_DIRECTORY=/var/lib/localStorage/files/original
         #- PROCESSED_FILES_DIRECTORY=/var/lib/localStorage/files/processed
-        - API_URL=${API_URL}
+        #- =${API_URL}
     container_name: wti_ai
     restart: unless-stopped
     #volumes:

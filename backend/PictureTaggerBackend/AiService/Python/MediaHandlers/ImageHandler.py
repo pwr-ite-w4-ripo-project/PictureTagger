@@ -12,7 +12,8 @@ class ImageHandler(MediaHandler):
         frame = image
         frame, labels = self.__frameHandler.handle(frame)
         self.__saveImage(outputFilePath, frame)
-        with open(f"{outputFilePath}_labels.txt", "a") as labelsFile:
+        # outputFilePath -> labelki
+        with open(f"{outputFilePath}", "a") as labelsFile:
             for label in labels:
                 labelsFile.write(f"{label}\n")
 
