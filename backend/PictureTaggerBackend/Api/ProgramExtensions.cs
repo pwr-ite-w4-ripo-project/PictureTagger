@@ -30,7 +30,7 @@ public static class ProgramExtensions
         builder.Services.AddTransient<DbContextOptions<ObjectDetectionDbContext>>(_ => options);
         builder.Services.AddDbContext<ObjectDetectionDbContext>();
         
-        // new ObjectDetectionDbContext(options).Database.Migrate();
+        new ObjectDetectionDbContext(options).Database.Migrate();
     }
 
     public static void ConfigureFileStorages(this WebApplicationBuilder builder)
