@@ -13,13 +13,12 @@ namespace Application.Handlers;
 
 public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, IApplicationResponse>
 {
-    // private readonly IFileRepository<OriginalFile> _fileRepository;
+    private readonly IFileRepository<OriginalFile> _fileRepository;
     // private readonly IFileStorage<OriginalFile> _fileStorage;
     private readonly IAmqpService _amqpService;
 
-    public UploadFileCommandHandler(IAmqpService amqpService)
-        // => (_fileStorage, _fileRepository, _amqpService) = (fileStorage, fileRepository, amqpService);
-        => (_amqpService) = (amqpService);
+    public UploadFileCommandHandler(IAmqpService amqpService, IFileRepository<OriginalFile> fileRepository)
+        => (_fileRepository, _amqpService) = (fileRepository, amqpService);
 
     public async Task<IApplicationResponse> Handle(UploadFileCommand request, CancellationToken cancellationToken)
     {
@@ -32,7 +31,7 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, IAppl
             new(FileStorageTypes.Firebase, request.Payload.Url),
             request.Requester);
         
-        // await _fileRepository.AddAsync(entity);
+        await _fileRepository.AddAsync(entity);
         _amqpService.Enqueue(new FileUploadedMessage(entity));
         
         return new OperationSuccessfulResponse(ResponseMessages.Successes.FileUploaded);

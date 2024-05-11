@@ -23,7 +23,7 @@ public static class ProgramExtensions
     public static void ConfigureDatabase(this WebApplicationBuilder builder)
     {
         var options = new DbContextOptionsBuilder<ObjectDetectionDbContext>()
-            .UseNpgsql(builder.Configuration.GetConnectionString("Db"), b => b.MigrationsAssembly("Infrastructure`"))
+            .UseNpgsql(builder.Configuration.GetConnectionString("Db"), b => b.MigrationsAssembly("Infrastructure"))
             .LogTo(Console.WriteLine, LogLevel.Information)
             .Options;
         

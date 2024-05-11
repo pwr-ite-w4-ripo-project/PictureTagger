@@ -43,7 +43,7 @@ services:
       context: .
       dockerfile: Dockerfile.api
     environment:
-      - ASPNETCORE_ConnectionStrings__ObjectDetectionDb=Host=db;Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Database=${DATABASE_NAME}
+      - ASPNETCORE_ConnectionStrings__Db=Host=db;Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Database=${DATABASE_NAME}
       - ASPNETCORE_ConnectionStrings__Amqp=Host=amqp;Port=${AMQP_PORT};Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=ApiClient
       #- ASPNETCORE_LocalStorage__OriginalFiles=/var/lib/localStorage/files/original
       #- ASPNETCORE_LocalStorage__ProcessedFiles=/var/lib/localStorage/files/processed
