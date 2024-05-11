@@ -26,6 +26,8 @@ outputFile = sys.argv[4]
 modelPath = sys.argv[5]
 treshold = float(sys.argv[6])
 
+print(f"ofile: {outputFile}")
+
 cred = credentials.Certificate(firebaseCredentials)
 firebase_admin.initialize_app(cred, { "storageBucket" : BUCKET})
 def loadFromFirebase(path: str) -> RgbImage:
@@ -47,9 +49,11 @@ modelWrapper = D0ModelWrapper(modelPath)
 frameHandler = ObjectDetector(modelWrapper, treshold)
 mediaHandler = ImageHandler(frameHandler) if mime == "image" else None
 labels = mediaHandler.handle(loadFromFirebase(inputFile))
-# print(labels)
+print(labels)
 
 fileContents = ""
 for label in labels:
     fileContents += f"{label}\n"
-writeToFirebase(outputFile, fileContents)
+# writeToFirebase(outputFile, fileContents)
+with open(outputFile, "a") as ofile:
+    ofile.write(fileContents)

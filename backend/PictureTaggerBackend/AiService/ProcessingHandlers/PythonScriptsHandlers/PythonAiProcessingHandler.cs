@@ -76,7 +76,7 @@ public class PythonAiProcessingHandler : IProcessingHandler
 
         // var newFileFullPath = _processedFilesStorage.GetFullPath(newFile);
         // var originalFileFullPath = _originalFilesStorage.GetFullPath(file);
-        var process = CreateAndRunProcess(file.Metadata.Type, file.StorageData.Uri, newFile.StorageData.Uri);
+        var process = CreateAndRunProcess(file.Metadata.Type, file.StorageData.Uri, newFilePath);
 
         while (!process.HasExited)
         {
@@ -111,8 +111,8 @@ public class PythonAiProcessingHandler : IProcessingHandler
         process.StartInfo.Arguments = $"Python/main.py {media} {inputFile} ./Python/key.json {outputFile} ./Python/Models/D0 0.5";
         process.StartInfo.FileName = "python";
         process.StartInfo.UseShellExecute = false;
-        process.StartInfo.RedirectStandardOutput = true;
-        process.OutputDataReceived += (_, _) => { };
+        // process.StartInfo.RedirectStandardOutput = true;
+        // process.OutputDataReceived += (_, _) => { };
          
         process.Start();
 
