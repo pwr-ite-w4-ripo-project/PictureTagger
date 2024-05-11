@@ -13,12 +13,13 @@ namespace Application.Handlers;
 
 public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, IApplicationResponse>
 {
-    private readonly IFileRepository<OriginalFile> _fileRepository;
-    private readonly IFileStorage<OriginalFile> _fileStorage;
+    // private readonly IFileRepository<OriginalFile> _fileRepository;
+    // private readonly IFileStorage<OriginalFile> _fileStorage;
     private readonly IAmqpService _amqpService;
 
-    public UploadFileCommandHandler(IFileStorage<OriginalFile> fileStorage, IFileRepository<OriginalFile> fileRepository, IAmqpService amqpService)
-        => (_fileStorage, _fileRepository, _amqpService) = (fileStorage, fileRepository, amqpService);
+    public UploadFileCommandHandler(IAmqpService amqpService)
+        // => (_fileStorage, _fileRepository, _amqpService) = (fileStorage, fileRepository, amqpService);
+        => (_amqpService) = (amqpService);
 
     public async Task<IApplicationResponse> Handle(UploadFileCommand request, CancellationToken cancellationToken)
     {
@@ -27,10 +28,11 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, IAppl
         OriginalFile entity = new(
             // CreateMetadata(request.Payload),
             new("test", MediaTypes.Image),
-            new(_fileStorage.StorageType, request.Payload.Url),
+            // new(_fileStorage.StorageType, request.Payload.Url),
+            new(FileStorageTypes.Firebase, request.Payload.Url),
             request.Requester);
         
-        await _fileRepository.AddAsync(entity);
+        // await _fileRepository.AddAsync(entity);
         _amqpService.Enqueue(new FileUploadedMessage(entity));
         
         return new OperationSuccessfulResponse(ResponseMessages.Successes.FileUploaded);
