@@ -8,14 +8,10 @@ class ImageHandler(MediaHandler):
     def __init__(self, frameHandler: FrameHandler) -> None:
         self.__frameHandler = frameHandler
 
-    def handle(self, image: RgbImage, outputFilePath: str) -> None:
+    def handle(self, image: RgbImage):
         frame = image
         frame, labels = self.__frameHandler.handle(frame)
-        self.__saveImage(outputFilePath, frame)
-        # outputFilePath -> labelki
-        with open(f"{outputFilePath}", "a") as labelsFile:
-            for label in labels:
-                labelsFile.write(f"{label}\n")
+        return labels
 
     def __loadImage(self, path: str) -> RgbImage:
         return array(

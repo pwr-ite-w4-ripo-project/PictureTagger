@@ -28,7 +28,6 @@ treshold = float(sys.argv[6])
 
 cred = credentials.Certificate(firebaseCredentials)
 firebase_admin.initialize_app(cred, { "storageBucket" : BUCKET})
-
 def loadFromFirebase(path: str) -> RgbImage:
     bucket = storage.bucket()
     blob = bucket.blob(path)
@@ -39,7 +38,18 @@ def loadFromFirebase(path: str) -> RgbImage:
             dtype="uint8"
         )
 
+def writeToFirebase(path: str, file):
+    bucket = storage.bucket()
+    blob = bucket.blob(path)
+    blob.upload_from_string(file)
+
 modelWrapper = D0ModelWrapper(modelPath)
 frameHandler = ObjectDetector(modelWrapper, treshold)
 mediaHandler = ImageHandler(frameHandler) if mime == "image" else None
-mediaHandler.handle(loadFromFirebase(inputFile), outputFile)
+labels = mediaHandler.handle(loadFromFirebase(inputFile))
+# print(labels)
+
+fileContents = ""
+for label in labels:
+    fileContents += f"{label}\n"
+writeToFirebase(outputFile, fileContents)
