@@ -17,7 +17,7 @@ internal static class UtilQueries
         return existing is not null;
     }
     
-    public static Task<List<Classification>> GetExistingClassifications(ObjectDetectionDbContext dbContext, IReadOnlySet<Classification> classifications)
+    public static Task<List<Classification>> GetExistingClassifications(ObjectDetectionDbContext dbContext, ICollection<Classification> classifications)
         => dbContext.Classifications
             .AsNoTracking()
             .Where(c => classifications.Contains(c))

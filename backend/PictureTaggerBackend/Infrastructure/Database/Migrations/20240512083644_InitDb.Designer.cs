@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ObjectDetectionDbContext))]
-    [Migration("20240511124235_InitDb")]
+    [Migration("20240512083644_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -73,6 +73,9 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Domain.AggregateModels.ProcessedFileAggregate.Classification", b =>
                 {
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -80,11 +83,7 @@ namespace Infrastructure.Database.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSequence(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
+                    b.HasKey("Name");
 
                     b.ToTable("Classifications", (string)null);
                 });
@@ -113,6 +112,7 @@ namespace Infrastructure.Database.Migrations
                     b.HasOne("Domain.AggregateModels.ProcessedFileAggregate.Classification", null)
                         .WithMany()
                         .HasForeignKey("ClassificationId")
+                        .HasPrincipalKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

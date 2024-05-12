@@ -70,6 +70,9 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Domain.AggregateModels.ProcessedFileAggregate.Classification", b =>
                 {
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -77,11 +80,7 @@ namespace Infrastructure.Database.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSequence(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
+                    b.HasKey("Name");
 
                     b.ToTable("Classifications", (string)null);
                 });
@@ -110,6 +109,7 @@ namespace Infrastructure.Database.Migrations
                     b.HasOne("Domain.AggregateModels.ProcessedFileAggregate.Classification", null)
                         .WithMany()
                         .HasForeignKey("ClassificationId")
+                        .HasPrincipalKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

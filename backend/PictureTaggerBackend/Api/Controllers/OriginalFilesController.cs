@@ -1,5 +1,8 @@
 using Application.Requests;
 using Application.Requests.Payloads;
+using Domain.AggregateModels;
+using Domain.AggregateModels.ProcessedFileAggregate;
+using Domain.SeedWork.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,5 +48,12 @@ public class OriginalFilesController : BaseController
         var response = await _mediator.Send(request);
         
         return MapResponse(response);
+    }
+
+    [HttpGet, Route("index")]
+    public async Task<List<ProcessedFile>> Index([FromServices] IFileRepository<ProcessedFile> r)
+    {
+        var (c, l) = await r.GetManyAsync(GetRequester(), QueryMediaTypes.All, builder => builder.ApplyLimit(10).ApplyOrder("name:asc").ApplyOffset(0));
+        return l;
     }
 }

@@ -17,7 +17,7 @@ public static class ModelBuilderExtensions
                     .IsRequired()
                     .ValueGeneratedOnAdd()
                     .UseSequence();
-                model.HasKey("Id");
+                model.HasKey(m => m.Name);
                 model.Property(m => m.Name)
                     .ValueGeneratedNever();
             });

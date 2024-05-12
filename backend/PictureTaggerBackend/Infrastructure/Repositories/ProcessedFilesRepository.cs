@@ -23,9 +23,12 @@ public sealed class ProcessedFilesRepository : BaseRepository, IProcessedFileRep
         
         var existingClassifications = await UtilQueries.GetExistingClassifications(
             DbContext,
-            entity.Classifications);
+            entity.Classifications.ToArray());
         
-        DbContext.AttachRange(entity.Classifications.Where(viewer => existingClassifications.Contains(viewer)));
+        // var x = entity.Classifications.Where(c => existingClassifications.Contains(c)); 
+        entity.Remove(entity.Classifications.Where(existingClassifications.Contains).ToArray());
+        entity.Add(existingClassifications);
+        DbContext.AttachRange(existingClassifications);
         
         DbContext.ProcessedFiles.Add(entity);
         await DbContext.SaveChangesAsync();
@@ -49,7 +52,8 @@ public sealed class ProcessedFilesRepository : BaseRepository, IProcessedFileRep
             _ => query
         };
         
-        query = query.Include(file => file.Owner);
+        query = query.Include(file => file.Owner)
+            .Include(file => file.Classifications);
         
         var totalCount = await query.CountAsync();
         var files = await configurePagination(new FilePaginationBuilder<ProcessedFile>(query))

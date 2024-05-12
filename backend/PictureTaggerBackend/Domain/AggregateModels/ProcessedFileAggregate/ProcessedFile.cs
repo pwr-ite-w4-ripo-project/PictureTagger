@@ -38,4 +38,7 @@ public sealed class ProcessedFile : UniqueEntity, IProcessedFile
 
     public void Add(ICollection<Classification> classifications)
         => _classifications.UnionWith(classifications);
+
+    public void Remove(ICollection<Classification> classifications)
+        => _classifications.RemoveWhere(classifications.Contains);
 }

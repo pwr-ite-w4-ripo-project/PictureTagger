@@ -29,12 +29,13 @@ namespace Infrastructure.Database.Migrations
                 name: "Classifications",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('\"ClassificationSequence\"')"),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('\"ClassificationSequence\"')")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classifications", x => x.Id);
+                    table.PrimaryKey("PK_Classifications", x => x.Name);
+                    table.UniqueConstraint("AK_Classifications_Id", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
