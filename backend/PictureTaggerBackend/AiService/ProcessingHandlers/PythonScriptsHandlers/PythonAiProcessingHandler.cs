@@ -62,21 +62,21 @@ public class PythonAiProcessingHandler : IProcessingHandler
 
     private async Task HandleProcessingInBackgroundThread(OriginalFile file, CancellationTokenSource tokenSource)
     {
-        string newFilePath = Guid.NewGuid().ToString() + ".txt";
+        string newFileLabelPath = Guid.NewGuid().ToString() + ".txt";
         // creates empty file to write processed data to
         // var newFilePath = await _processedFilesStorage.SaveAsync(new MemoryStream(), file.Owner);
         ProcessedFile newFile = new(
             file.Owner,
             file.Metadata,
-            file.StorageData with { Uri = "newFilePath"},
-            new ServeData(""),
+            file.StorageData,
+            new ServeData(file.StorageData.Uri),
             Array.Empty<Classification>());
 
         // newFile.ServeData = new(_urlFactory.Create(newFile));
 
         // var newFileFullPath = _processedFilesStorage.GetFullPath(newFile);
         // var originalFileFullPath = _originalFilesStorage.GetFullPath(file);
-        var process = CreateAndRunProcess(file.Metadata.Type, file.StorageData.Uri, newFilePath);
+        var process = CreateAndRunProcess(file.Metadata.Type, file.StorageData.Uri, newFileLabelPath);
 
         while (!process.HasExited)
         {
@@ -88,11 +88,11 @@ public class PythonAiProcessingHandler : IProcessingHandler
 
         process.Dispose();
 
-        var labels = File.ReadAllLines(newFilePath)
+        var labels = File.ReadAllLines(newFileLabelPath)
             .Select(l => new Classification(l))
             .ToList();
         newFile.SetClassifications(labels);
-        File.Delete(newFilePath); 
+        File.Delete(newFileLabelPath); 
         
         lock (_filesCancellationTokenSourcesLookUpTable)
         {

@@ -14,15 +14,15 @@ public class ProcessedFilesController : BaseController
         =>  _mediator = mediator;
 
     // [Authorize]
-    [HttpGet, Route("{id:guid}")]
-    public async Task<IActionResult> Download([FromQuery] Guid id)
-    {
-        DownloadProcessedFileQuery request = new(id, GetRequester());
-        
-        var response = await _mediator.Send(request);
-
-        return MapResponse(response);
-    }
+    // [HttpGet, Route("{id:guid}")]
+    // public async Task<IActionResult> Download([FromQuery] Guid id)
+    // {
+    //     DownloadProcessedFileQuery request = new(id, GetRequester());
+    //     
+    //     var response = await _mediator.Send(request);
+    //
+    //     return MapResponse(response);
+    // }
     
     // [Authorize]
     [HttpGet, Route("")]
@@ -36,24 +36,24 @@ public class ProcessedFilesController : BaseController
     }
     
     // [Authorize]
-    [HttpDelete, Route("{id:guid}")]
-    public async Task<IActionResult> Delete([FromRoute] Guid id)
-    {
-        DeleteProcessedFileCommand request = new(id, GetRequester());
-    
-        var response = await _mediator.Send(request);
-        
-        return MapResponse(response);
-    }
+    // [HttpDelete, Route("{id:guid}")]
+    // public async Task<IActionResult> Delete([FromRoute] Guid id)
+    // {
+    //     DeleteProcessedFileCommand request = new(id, GetRequester());
+    //
+    //     var response = await _mediator.Send(request);
+    //     
+    //     return MapResponse(response);
+    // }
     
     // [Authorize] 
-    [HttpPatch, Route("${id:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateProcessedFilePayload payload)
-    {
-        UpdateProcessedFileCommand request = new(id, payload, GetRequester());
-
-        var response = await _mediator.Send(request);
-        
-        return MapResponse(response);
-    }
+    // [HttpPatch, Route("${id:guid}")]
+    // public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateProcessedFilePayload payload)
+    // {
+    //     UpdateProcessedFileCommand request = new(id, payload, GetRequester());
+    //
+    //     var response = await _mediator.Send(request);
+    //     
+    //     return MapResponse(response);
+    // }
 }

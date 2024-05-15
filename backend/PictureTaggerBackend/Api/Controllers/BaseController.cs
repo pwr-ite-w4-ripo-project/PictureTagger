@@ -9,7 +9,10 @@ namespace Api.Controllers;
 
 public abstract class BaseController : Controller
 {
-    protected AccessAccount GetRequester() => "todo@email.dev"; // TODO auth & OAuth
+    protected AccessAccount GetRequester()
+    {
+        return HttpContext.Request.Headers["email-acc"].ToString();
+    }
 
     protected IActionResult MapResponse(IApplicationResponse response)
         => response.Success

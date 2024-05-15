@@ -40,20 +40,21 @@ public class OriginalFilesController : BaseController
     }
     
     // [Authorize]
-    [HttpDelete, Route("${id:guid}")]
-    public async Task<IActionResult> Delete([FromRoute] Guid id)
-    {
-        DeleteOriginalFileCommand request = new(id, GetRequester());
+    // [HttpDelete, Route("${id:guid}")]
+    // public async Task<IActionResult> Delete([FromRoute] Guid id)
+    // {
+    //     DeleteOriginalFileCommand request = new(id, GetRequester());
+    //
+    //     var response = await _mediator.Send(request);
+    //     
+    //     return MapResponse(response);
+    // }
 
-        var response = await _mediator.Send(request);
-        
-        return MapResponse(response);
-    }
-
-    [HttpGet, Route("index")]
-    public async Task<List<ProcessedFile>> Index([FromServices] IFileRepository<ProcessedFile> r)
-    {
-        var (c, l) = await r.GetManyAsync(GetRequester(), QueryMediaTypes.All, builder => builder.ApplyLimit(10).ApplyOrder("name:asc").ApplyOffset(0));
-        return l;
-    }
+    // [HttpGet, Route("index")]
+    // public async Task<List<ProcessedFile>> Index([FromServices] IFileRepository<ProcessedFile> r)
+    // {
+    //     var x = GetRequester();
+    //     var (c, l) = await r.GetManyAsync(GetRequester(), QueryMediaTypes.All, builder => builder.ApplyLimit(10).ApplyOrder("name:asc").ApplyOffset(0));
+    //     return l;
+    // }
 }
