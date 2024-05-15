@@ -17,7 +17,7 @@ from numpy import array
 if len(sys.argv) < 7:
     raise Exception("Insufficient number of cli arguments.")
 
-BUCKET = "test-img-b055b.appspot.com"
+BUCKET = "picturetagger-94c93.appspot.com"
 
 mime = sys.argv[1]
 inputFile = sys.argv[2]
