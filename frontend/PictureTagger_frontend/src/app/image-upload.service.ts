@@ -21,6 +21,6 @@ export class ImageUploadService {
     const uploadTask = await uploadBytes(storageRef, file);
     const downloadUrl = await getDownloadURL(uploadTask.ref);
 
-    return downloadUrl;
+    return filePath;
   }
 }
