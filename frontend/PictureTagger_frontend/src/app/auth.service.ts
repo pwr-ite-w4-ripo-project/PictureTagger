@@ -12,6 +12,12 @@ export class AuthService {
     user$ = user(this.firebaseAuth)
     currentUserSig = signal<UserInterface | null | undefined>(undefined)
 
+    constructor() {
+        this.user$.subscribe(user => {
+          this.currentUserSig.set(user ? { email: user.email!, username: user.displayName! } : null);
+        });
+      }
+
     
     loginWithGoogle(): Observable<void> {
         const promise = signInWithRedirect(

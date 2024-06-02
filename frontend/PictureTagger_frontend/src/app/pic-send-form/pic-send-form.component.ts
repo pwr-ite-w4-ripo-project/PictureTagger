@@ -3,6 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImageUploadService } from '../image-upload.service';
 import { ApiService } from '../api.service';
+import { UserInterface } from '../user.interface';
+import { AuthService } from '../auth.service';
+import { SharedService } from '../picture.service';
+import { PicLastRecComponent } from '../pic-last-rec/pic-last-rec.component';
 
 @Component({
   selector: 'app-pic-send-form',
@@ -10,6 +14,7 @@ import { ApiService } from '../api.service';
   imports: [
     CommonModule,
     FormsModule,
+    PicLastRecComponent
   ],
   templateUrl: './pic-send-form.component.html',
   styleUrls: ['./pic-send-form.component.css']
@@ -19,11 +24,30 @@ export class PicSendFormComponent {
   selectedFileName: string | null = null;
   imageUrl: string | null = null;
   filePath: string | null = null;
+  user: UserInterface | null = null;
+  clearResults = false;
 
   constructor(
     private imageUploadService: ImageUploadService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private authService: AuthService,
+    private picService: SharedService
   ) { }
+
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe((user) => {
+      if (user) {
+        this.user = {
+          email: user.email!,
+          username: user.displayName!
+        };
+      } else {
+        this.user = null;
+      }
+    });
+  }
+
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files?.[0] || null;
@@ -44,8 +68,7 @@ export class PicSendFormComponent {
     if (this.selectedFile) {
       this.imageUploadService.uploadImage(this.selectedFile)
         .then(filePath=> {
-          //console.log('Plik został wysłany:', filePath);
-          this.filePath = 'gs://picturetagger-94c93.appspot.com/' + filePath
+          this.filePath = filePath
           console.log('Plik został wysłany:', this.filePath);
           this.sendImagePathToApi(this.filePath);
           this.resetForm();
@@ -57,20 +80,24 @@ export class PicSendFormComponent {
   }
 
   sendImagePathToApi(imagePath: string): void {
-    this.apiService.submitImagePath(imagePath).subscribe({
+    if (this.user && this.user.email) {
+      this.apiService.submitImagePath(imagePath, this.user.email).subscribe({
       next: response => {
         console.log('Ścieżka obrazu pomyślnie wysłana do API:', response);
+        this.picService.triggerGetProcessedPic(imagePath);
       },
       error: error => {
         console.error('Błąd podczas wysyłania ścieżki obrazu do API:', error);
       }
     });
+    }
   }
 
   resetForm(): void {
     this.selectedFile = null;
     this.selectedFileName = null;
     this.imageUrl = null;
+    console.log("zmienilem");
     (document.getElementById('image') as HTMLInputElement).value = '';
   }
 }

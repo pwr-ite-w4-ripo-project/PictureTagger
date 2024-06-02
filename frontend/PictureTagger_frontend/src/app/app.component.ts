@@ -8,11 +8,12 @@ import { CustomMaterialModule } from './material.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { PicSendFormComponent } from './pic-send-form/pic-send-form.component'
+import { PicLastRecComponent } from './pic-last-rec/pic-last-rec.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, CustomMaterialModule, LoginComponent, RegisterComponent, PicSendFormComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, CustomMaterialModule, LoginComponent, RegisterComponent, PicSendFormComponent, PicLastRecComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {

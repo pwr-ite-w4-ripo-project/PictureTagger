@@ -10,7 +10,6 @@ import { provideStorage, getStorage } from '@angular/fire/storage'
 
 // insert firebase credentials here 
 const firebaseConfig = {
-  
 };
 
 export const appConfig: ApplicationConfig = {

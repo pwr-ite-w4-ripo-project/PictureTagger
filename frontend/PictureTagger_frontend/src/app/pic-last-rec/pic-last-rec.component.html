@@ -1,0 +1,22 @@
+<div *ngIf="visible">
+  <div *ngIf="isLoading;then loading else dataContent"></div>
+  <ng-template #loading>
+    <p>Loading...</p>
+  </ng-template>
+  <ng-template #dataContent>
+    <div>
+      <div *ngIf="emptyRecognize">
+        <h2>Cannot recognize any object, please try again.</h2>
+      </div>
+      <h2>Classifications</h2>
+      <ul *ngIf="classifications.length > 0; else noClassifications">
+        <li *ngFor="let classification of classifications">{{ classification }}</li>
+      </ul>
+      <ng-template #noClassifications>
+        <p>No classifications found for the specified file.</p>
+      </ng-template>
+    </div>
+  </ng-template>
+</div>
+
+  
