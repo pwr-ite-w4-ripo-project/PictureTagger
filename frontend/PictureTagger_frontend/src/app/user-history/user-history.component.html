@@ -1,0 +1,17 @@
+<div *ngIf="files.length > 0">
+  <div *ngFor="let file of files" class="file-item">
+    <div class="mt-4">
+      <!-- <h3>Image Preview:</h3> -->
+      <img [src]="file.serveData.url" alt="Image Preview" class="img-thumbnail mt-2 image-preview">
+    </div>
+    <div class="classifications">
+      <h3>Classifications</h3>
+      <span *ngFor="let classification of file.classifications">
+        {{ classification.name }}
+      </span>
+    </div>
+  </div>
+</div>
+<div *ngIf="files.length === 0">
+  No files to display.
+</div>

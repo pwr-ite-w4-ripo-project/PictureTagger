@@ -1,7 +1,9 @@
 <div *ngIf="visible">
-  <div *ngIf="isLoading;then loading else dataContent"></div>
+  <div *ngIf="isLoading; then loading else dataContent"></div>
   <ng-template #loading>
-    <p>Loading...</p>
+    <div class="loader-container">
+      <div class="loader"></div>
+    </div>
   </ng-template>
   <ng-template #dataContent>
     <div>

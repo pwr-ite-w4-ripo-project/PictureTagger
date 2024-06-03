@@ -9,11 +9,12 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { PicSendFormComponent } from './pic-send-form/pic-send-form.component'
 import { PicLastRecComponent } from './pic-last-rec/pic-last-rec.component';
+import { UserHistoryComponent } from './user-history/user-history.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, CustomMaterialModule, LoginComponent, RegisterComponent, PicSendFormComponent, PicLastRecComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, CustomMaterialModule, LoginComponent, RegisterComponent, PicSendFormComponent, PicLastRecComponent, UserHistoryComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
@@ -41,5 +42,13 @@ export class AppComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigateByUrl('/login');
+  }
+
+  showHistory(): void {
+    this.router.navigateByUrl('/history');
+  }
+
+  sendPic(): void {
+    this.router.navigateByUrl('/send');
   }
 }

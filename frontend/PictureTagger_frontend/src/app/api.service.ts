@@ -21,5 +21,4 @@ export class ApiService {
     const headers = new HttpHeaders({'Content-Type': 'application/json', 'email-acc': userMail});
     return this.http.get(this.getPicUrl, { headers });
   }
-  
 }

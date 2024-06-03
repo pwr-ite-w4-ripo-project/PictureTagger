@@ -3,6 +3,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { PicSendFormComponent } from './pic-send-form/pic-send-form.component'
 import { authGuard } from './auth.guard';
+import { UserHistoryComponent } from './user-history/user-history.component';
 
 export const routes: Routes = [
     {
@@ -20,6 +21,11 @@ export const routes: Routes = [
       {
         path: 'send',
         component: PicSendFormComponent,
+        canActivate: [authGuard]
+      },
+      {
+        path: 'history',
+        component: UserHistoryComponent,
         canActivate: [authGuard]
       },
 ];
